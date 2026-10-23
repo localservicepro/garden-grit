@@ -14,6 +14,12 @@ const suburbs = D('suburbs.json');
 const reviews = D('reviews.json');
 const posts = D('posts.json').sort((a, b) => b.date.localeCompare(a.date));
 const redirects = D('redirects-source.json').map;
+/* Staged release: pages above the current stage are built and in the sitemap but not linked anywhere. */
+const release = D('release.json');
+const STAGE = Number(process.env.RELEASE_STAGE || release.stage);
+const stageOf = (url) => { for (const [pat, st] of Object.entries(release.pages)) { if (pat.endsWith('*') ? url.startsWith(pat.slice(0, -1)) : url === pat) return st; } return 1; };
+const visible = (url) => stageOf(url) <= STAGE;
+const navLink = (url, label) => visible(url) ? `<li><a href="${url}">${label}</a></li>` : '';
 const dims = fs.existsSync(path.join(root, 'data/_image-dims.json')) ? D('_image-dims.json') : {};
 const generated = ['gen-irrigation']; // images produced with Higgsfield, not client photos
 const BASE = biz.website.replace(/\/$/, '');
@@ -25,6 +31,8 @@ const words = (html) => String(html || '').replace(/<[^>]+>/g, ' ').split(/\s+/)
 const svcBySlug = Object.fromEntries(services.map(s => [s.slug, s]));
 const svcPath = (s) => `/services/${s.slug}/`;
 const postPath = (p) => `/blog/${p.slug}/`;
+const visServices = services.filter(s => visible(svcPath(s)));
+const visPosts = posts.filter(p => visible(postPath(p)));
 const suburbNames = suburbs.map(s => s.name);
 
 /* ---------------- images ---------------- */
@@ -107,9 +115,9 @@ ${[businessSchema(), ...schema].map(s => `<script type="application/ld+json">${J
 }
 
 function header() {
-  const dd = [`<a class="dd__item" role="menuitem" href="/services/"><span class="dd__icon">${I.grid}</span><span><strong>All Services</strong><em>Everything a qualified horticulturist can do for your garden</em></span></a>`]
-    .concat(services.map(s => `<a class="dd__item" role="menuitem" href="${svcPath(s)}"><span class="dd__icon">${I[s.icon]}</span><span><strong>${esc(s.name)}</strong><em>${esc(s.descriptor)}</em></span></a>`)).join('');
-  const mob = services.map(s => `<li><a href="${svcPath(s)}">${esc(s.name)} <span>${esc(s.descriptor)}</span></a></li>`).join('');
+  const dd = (visible('/services/') ? [`<a class="dd__item" role="menuitem" href="/services/"><span class="dd__icon">${I.grid}</span><span><strong>All Services</strong><em>Everything a qualified horticulturist can do for your garden</em></span></a>`] : [])
+    .concat(visServices.map(s => `<a class="dd__item" role="menuitem" href="${svcPath(s)}"><span class="dd__icon">${I[s.icon]}</span><span><strong>${esc(s.name)}</strong><em>${esc(s.descriptor)}</em></span></a>`)).join('');
+  const mob = visServices.map(s => `<li><a href="${svcPath(s)}">${esc(s.name)} <span>${esc(s.descriptor)}</span></a></li>`).join('');
   return `<a class="skip" href="#main">Skip to content</a>
 <header class="header">
   <div class="wrap header__in">
@@ -119,9 +127,9 @@ function header() {
         <li><a href="/">Home</a></li>
         <li class="has-dd"><button type="button" aria-expanded="false" aria-controls="services-menu">Services ${I.caret}</button>
           <div class="dd" id="services-menu" role="menu">${dd}</div></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/areas/">Areas</a></li>
-        <li><a href="/blog/">Advice</a></li>
+        ${navLink('/about/', 'About')}
+        ${navLink('/areas/', 'Areas')}
+        ${navLink('/blog/', 'Advice')}
         <li><a href="/contact/">Contact</a></li>
       </ul>
     </nav>
@@ -136,10 +144,10 @@ function header() {
     <ul>
       <li><a href="/">Home</a></li>
       <li><button class="acc" type="button" aria-expanded="false">Services ${I.caret}</button>
-        <ul class="acc-panel"><li><a href="/services/">All Services</a></li>${mob}</ul></li>
-      <li><a href="/about/">About</a></li>
-      <li><a href="/areas/">Service Areas</a></li>
-      <li><a href="/blog/">Advice</a></li>
+        <ul class="acc-panel">${visible('/services/') ? '<li><a href="/services/">All Services</a></li>' : ''}${mob}</ul></li>
+      ${navLink('/about/', 'About')}
+      ${navLink('/areas/', 'Service Areas')}
+      ${navLink('/blog/', 'Advice')}
       <li><a href="/contact/">Contact</a></li>
     </ul>
     <div class="mobile-nav__cta"><a class="btn btn--primary btn--block" href="/contact/">Get a Free Quote</a><a class="btn btn--ghost btn--block" href="tel:${biz.phoneTel}">Call ${biz.phoneDisplay}</a></div>
@@ -162,9 +170,9 @@ function footer() {
         <a href="${biz.gbpUrl}" rel="noopener" target="_blank" aria-label="Garden Grit on Google">${I.google}</a>
       </div>
     </div>
-    <div><h3>Services</h3><ul>${services.map(s => `<li><a href="${svcPath(s)}">${esc(s.name)}</a></li>`).join('')}<li><a href="/services/">All services</a></li></ul></div>
-    <div><h3>Service areas</h3><ul>${suburbs.slice(0, 12).map(s => `<li><a href="/areas/">${esc(s.name)}</a></li>`).join('')}<li><a href="/areas/">All suburbs</a></li></ul></div>
-    <div><h3>Garden Grit</h3><ul><li><a href="/about/">About Emma</a></li><li><a href="/blog/">Gardening advice</a></li><li><a href="/contact/">Contact &amp; quotes</a></li><li><a href="/contact/#map">Find us on Google</a></li></ul></div>
+    <div><h3>Services</h3><ul>${visServices.map(s => `<li><a href="${svcPath(s)}">${esc(s.name)}</a></li>`).join('')}${navLink('/services/', 'All services')}</ul></div>
+    <div><h3>Service areas</h3><ul>${suburbs.slice(0, 12).map(s => visible('/areas/') ? `<li><a href="/areas/">${esc(s.name)}</a></li>` : `<li>${esc(s.name)}</li>`).join('')}${navLink('/areas/', 'All suburbs')}</ul></div>
+    <div><h3>Garden Grit</h3><ul>${navLink('/about/', 'About Emma')}${navLink('/blog/', 'Gardening advice')}<li><a href="/contact/">Contact &amp; quotes</a></li><li><a href="/contact/#map">Find us on Google</a></li></ul></div>
   </div>
   <div class="wrap footer__bottom"><span>&copy; ${new Date().getFullYear()} ${esc(biz.name)}. Qualified horticulturist, Norwood SA.</span><span>Owner-operated by ${esc(biz.owner)}</span></div>
 </footer>
@@ -174,11 +182,13 @@ function footer() {
 
 function page(opts) {
   const mapJs = opts.body.includes('class="areamap') ? '<script src="/assets/js/map.js" defer></script>' : '';
+  // Staged release: de-link any remaining anchor to a page that is not yet visible (text stays, link goes)
+  const body = opts.body.replace(/<a\b([^>]*?)href="(\/[^"#?]*)"([^>]*)>([\s\S]*?)<\/a>/g, (m, pre, url, post, text) => visible(url) ? m : `<span class="delinked">${text}</span>`);
   return `${head(opts)}
 <body>
 ${header()}
 <main id="main">
-${opts.body}
+${body}
 </main>
 ${footer()}
 ${mapJs}
@@ -211,7 +221,7 @@ const reviewsBlock = () => `
   </div>
 </section>`;
 
-const serviceCards = (list = services) => `<div class="grid grid--3">${list.map(s => `
+const serviceCards = (list = visServices) => `<div class="grid grid--3">${list.map(s => `
 <a class="card reveal" href="${svcPath(s)}">
   <div class="card__media">${img(s.image, s.imageAlt)}<span class="card__icon">${I[s.icon]}</span></div>
   <div class="card__body"><span class="where">${esc(s.descriptor)}</span><h3>${esc(s.name)}</h3><p>${esc(s.card)}</p><span class="link-arrow">Learn more ${I.arrow}</span></div>
@@ -334,7 +344,7 @@ function homePage() {
 </section>
 <section class="section" id="services">
   <div class="wrap">
-    <div class="section-head reveal"><p class="eyebrow">What I do</p><h2>Gardening services across Adelaide's east</h2>${rule()}<p class="lede">Six landscaping and garden services, each with its own page. Every one is quoted after a visit and done by a qualified horticulturist rather than a mow-and-go crew.</p></div>
+    <div class="section-head reveal"><p class="eyebrow">What I do</p><h2>Gardening services across Adelaide's east</h2>${rule()}<p class="lede">${visServices.length === services.length ? 'Six' : String(visServices.length)} landscaping and garden services, each with its own page. Every one is quoted after a visit and done by a qualified horticulturist rather than a mow-and-go crew.</p></div>
     ${serviceCards()}
   </div>
 </section>
@@ -351,7 +361,7 @@ function homePage() {
         <li><span class="feat__icon">${I.leaf}</span><div><strong>Honest about what will work</strong><p>If a tree is too big for its spot or a lawn will never thrive in that shade, you will hear it before you spend money.</p></div></li>
       </ul>
       <div class="quote-card"><p>"Her advice on plants and maintenance has clearly improved the health and appearance of my garden."</p><cite>Robyn, Norwood SA</cite></div>
-      <p style="margin-top:1.4rem"><a class="link-arrow" href="/about/">More about Emma and Garden Grit ${I.arrow}</a></p>
+      ${visible('/about/') ? `<p style="margin-top:1.4rem"><a class="link-arrow" href="/about/">More about Emma and Garden Grit ${I.arrow}</a></p>` : ''}
     </div>
   </div>
 </section>
@@ -373,7 +383,7 @@ function homePage() {
       <h2>Norwood to Tea Tree Gully, Burnside to Bowden</h2>${rule()}
       <p>Garden Grit is based in Norwood and travels up to 20 km, which takes in the eastern and north-eastern suburbs and the inner west. A Norwood-based horticulturist means shorter travel, quicker call-outs and a landscaping gardener who knows the clay soils, the old hedges and the big street trees of these suburbs.</p>
       <p>Watch the mower on the map do the run: out through Payneham and Campbelltown to Tea Tree Gully, back down through Magill and Burnside, across the city to Bowden and home to Norwood.</p>
-      <p style="margin-top:1.2rem"><a class="link-arrow" href="/areas/">See the full service area ${I.arrow}</a></p>
+      ${visible('/areas/') ? `<p style="margin-top:1.2rem"><a class="link-arrow" href="/areas/">See the full service area ${I.arrow}</a></p>` : ''}
     </div>
     <div class="reveal"><h3>Suburbs served</h3>${areasList()}</div>
     </div>
@@ -423,7 +433,7 @@ ${pageHero({ eyebrow: `Qualified horticulturist · Norwood SA`, h1: esc(s.h1), l
   <div class="wrap split" style="align-items:start">
     <div class="prose reveal">${s.sections.map(sec => `<h2>${esc(sec.h2)}</h2>${sec.html}`).join('')}</div>
     <aside class="reveal">
-      <div class="related"><h3>Related services</h3><ul>${s.related.map(r => svcBySlug[r]).map(r => `<li><a href="${svcPath(r)}">${esc(r.name)}</a> <span class="muted small">${esc(r.descriptor)}</span></li>`).join('')}</ul></div>
+      <div class="related"><h3>Related services</h3><ul>${s.related.map(r => svcBySlug[r]).filter(r => visible(svcPath(r))).map(r => `<li><a href="${svcPath(r)}">${esc(r.name)}</a> <span class="muted small">${esc(r.descriptor)}</span></li>`).join('')}</ul></div>
       <div class="related" style="margin-top:1rem"><h3>Service area</h3><p class="small" style="margin:0">${suburbNames.join(' · ')}</p><p style="margin:.8rem 0 0"><a class="link-arrow" href="/areas/">All service areas ${I.arrow}</a></p></div>
       <div class="related" style="margin-top:1rem;background:#fff"><h3>Get a quote</h3><p class="small">Call ${biz.phoneDisplay} or use the form on the contact page. Quotes are free and follow a quick site visit.</p><a class="btn btn--primary btn--block" href="/contact/?service=${encodeURIComponent(s.formLabel)}">Request a quote ${I.arrow}</a></div>
     </aside>
@@ -535,7 +545,7 @@ function thankYouPage() {
     <p class="eyebrow" style="justify-content:center">Thanks</p>
     <h1>Got it. Emma will be in touch soon.</h1>${rule('ink-rule--center')}
     <p class="lede" style="margin-inline:auto">Your quote request has been received. Expect a call or email, usually the same day, to arrange a time to look at the garden. If it is urgent, call <a href="tel:${biz.phoneTel}">${biz.phoneDisplay}</a>.</p>
-    <p style="margin-top:1.6rem"><a class="btn btn--primary" href="/blog/">Read some gardening advice while you wait ${I.arrow}</a></p>
+    <p style="margin-top:1.6rem">${visible('/blog/') ? `<a class="btn btn--primary" href="/blog/">Read some gardening advice while you wait ${I.arrow}</a>` : `<a class="btn btn--primary" href="/">Back to the home page ${I.arrow}</a>`}</p>
   </div>
 </section>`;
   return page({ title: 'Thanks, we will be in touch | Garden Grit', desc: 'Your quote request has been received by Garden Grit. Emma will call or email, usually the same day.', url: '/thank-you/', body, noindex: true });
@@ -544,7 +554,7 @@ function thankYouPage() {
 function blogIndex() {
   const body = `
 ${pageHero({ eyebrow: 'Advice', h1: 'Gardening Advice from an Adelaide Horticulturist', lede: 'Practical answers to the questions clients ask most: when to prune, what a job costs, which turf to lay and how often to cut the hedge.', crumbs: [['Home', '/'], ['Advice', '/blog/']], cta: false })}
-<section class="section"><div class="wrap"><div class="post-list">${posts.map(p => `<a class="post-card reveal" href="${postPath(p)}"><time datetime="${p.date}">${new Date(p.date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</time><h3>${esc(p.title)}</h3><p>${esc(p.excerpt)}</p><span class="link-arrow">Read ${I.arrow}</span></a>`).join('')}</div></div></section>
+<section class="section"><div class="wrap"><div class="post-list">${visPosts.map(p => `<a class="post-card reveal" href="${postPath(p)}"><time datetime="${p.date}">${new Date(p.date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</time><h3>${esc(p.title)}</h3><p>${esc(p.excerpt)}</p><span class="link-arrow">Read ${I.arrow}</span></a>`).join('')}</div></div></section>
 ${ctaBand()}`;
   return page({ title: 'Gardening Advice for Adelaide | Garden Grit Blog', desc: 'Pruning calendars, hedge timing, lawn and tree pruning costs: practical gardening advice for Adelaide\'s eastern suburbs from horticulturist Emma Pelle.', url: '/blog/', body,
     schema: [breadcrumbSchema([['Home', '/'], ['Advice', '/blog/']])] });
@@ -562,7 +572,7 @@ function postPage(p) {
   <article class="prose reveal">${p.bodyHtml}</article>
   <aside class="reveal">
     <div class="related"><h3>Related service</h3><p class="small">${esc(s.card)}</p><a class="btn btn--primary btn--block" href="${svcPath(s)}">${esc(s.name)} ${I.arrow}</a></div>
-    <div class="related" style="margin-top:1rem"><h3>More advice</h3><ul>${posts.filter(x => x.slug !== p.slug).map(x => `<li><a href="${postPath(x)}">${esc(x.title)}</a></li>`).join('')}</ul></div>
+    <div class="related" style="margin-top:1rem"><h3>More advice</h3><ul>${visPosts.filter(x => x.slug !== p.slug).map(x => `<li><a href="${postPath(x)}">${esc(x.title)}</a></li>`).join('')}</ul></div>
   </aside>
 </div></section>
 ${ctaBand()}`;
@@ -620,5 +630,5 @@ const vercel = {
 fs.writeFileSync(path.join(root, 'vercel.json'), JSON.stringify(Object.assign({ outputDirectory: 'site', buildCommand: 'npm run build', framework: null }, vercel), null, 2) + '\n');
 fs.writeFileSync(path.join(root, 'data/generated-images.json'), JSON.stringify(generated.map(f => ({ file: f, source: 'Higgsfield gpt_image_2_5', reason: 'no client photo for irrigation' })), null, 2) + '\n');
 
-console.log(`built ${urls.length + 2} pages → site/`);
+console.log(`built ${urls.length + 2} pages → site/ (release stage ${STAGE}: ${urls.filter(([u]) => visible('/' + u)).length} linked, ${urls.filter(([u]) => !visible('/' + u)).length} live but unlinked, all in sitemap)`);
 if (warnings.length) { console.log('warnings:'); warnings.forEach(w => console.log('  - ' + w)); }

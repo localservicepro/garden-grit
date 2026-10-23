@@ -1,0 +1,19 @@
+{
+  "_comment": "Staged release for the 3-term payment plan. Every page is always built, live and in sitemap.xml; pages with a stage above the current one are simply not linked from the nav, dropdown, footer, cards or body copy. Bump `stage` (or run RELEASE_STAGE=2 npm run build) to reveal the next segment.",
+  "stage": 1,
+  "pages": {
+    "/": 1,
+    "/about/": 1,
+    "/contact/": 1,
+    "/services/landscape-design/": 1,
+    "/services/garden-maintenance/": 1,
+    "/services/hedge-trimming/": 1,
+    "/services/": 2,
+    "/services/tree-pruning/": 2,
+    "/services/turf-installation/": 2,
+    "/services/irrigation-installation/": 2,
+    "/areas/": 2,
+    "/blog/": 3,
+    "/blog/*": 3
+  }
+}

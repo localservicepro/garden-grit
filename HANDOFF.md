@@ -32,6 +32,14 @@ vercel.json      ← outputDirectory, clean URLs, 301s from the old Wix URLs, se
 - Opening hours are not published (none supplied). Add `openingHoursSpecification` to `businessSchema()` in build.js when the client confirms them.
 - Reviews are the three real testimonials from the old site, verbatim (the Wix placeholder review was dropped).
 
+## Staged release (3-term plan)
+
+`data/release.json` sets the current `stage` and the stage of every page. All pages are always built, live at their URLs and listed in `sitemap.xml` (so Search Console can crawl them from day one); pages above the current stage are simply not linked from the nav, dropdown, footer, cards or body copy. To release the next segment, change `stage` to 2 (then 3), run `npm run build`, commit and push. `RELEASE_STAGE=2 npm run build` previews a stage without editing the file.
+
+- Stage 1: Home, Landscape Design, Garden Clean Up & Maintenance, Hedge Trimming, About, Contact
+- Stage 2: Services index, Tree Pruning, Turf Installation, Irrigation, Service Areas
+- Stage 3: Advice index and the four posts
+
 ## Form → GHL
 
 `<form name="quote" method="post" action="/api/quote">` with field names `full_name, email, phone, property_address, property_size, service_needed, job_notes`. Service dropdown: Turf Installation, Hedge Pruning & Trimming, Garden Clean Up, Landscaping & Landscape Design, Tree Pruning, Other. The tracking script (`data-tracking-id` in `data/business.json`) is in the `<head>` of every page. After submit the visitor lands on `/thank-you/` (noindex).
