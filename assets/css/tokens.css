@@ -30,6 +30,7 @@
 
   /* Carrot terracotta — accent only */
   --terra: #c4622d;
+  --terra-text: #9a4a1f;   /* AA-contrast terracotta for small text */
   --terra-tint: #f7e7dc;
 
   /* Text */

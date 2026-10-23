@@ -221,7 +221,7 @@ strong { font-weight: 700; }
 .card:hover .card__icon { transform: rotate(-10deg) scale(1.08); background: var(--terra-tint); }
 .card__body { padding: 1.6rem 1.3rem 1.3rem; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
 .card__body h3 { margin: 0; font-size: 1.2rem; }
-.card__body .where { font-size: .82rem; color: var(--terra); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.card__body .where { font-size: .82rem; color: var(--terra-text); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .card__body p { margin: 0; color: var(--t-muted); font-size: .95rem; flex: 1; }
 .card__body .link-arrow { margin-top: .5rem; }
 
