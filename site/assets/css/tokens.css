@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Garden Grit — design tokens
+   The logo is pure black ink on white, so the palette is built from the brand
+   feel rather than sampled logo colour:
+   - charcoal ink to match the logo's black
+   - white + warm paper off-white for backgrounds
+   - one leaf green sampled from the client's job photos (hedge / turf photos
+     average #5c7033; darkened to #3f5a2a for AA contrast on buttons)
+   - one terracotta accent pulled from the carrot in the logo, used sparingly
+   ========================================================================== */
+:root {
+  /* Ink (logo black) */
+  --ink: #141414;
+  --ink-2: #1c1c1c;
+  --ink-3: #2b2b2b;
+  --ink-line: #3a3a3a;
+
+  /* Paper */
+  --white: #ffffff;
+  --paper: #f7f4ed;
+  --paper-2: #efeadf;
+  --line: #e3ded3;
+
+  /* Leaf green — primary action colour */
+  --green: #3f5a2a;
+  --green-hover: #32481f;
+  --green-leaf: #5c7033;   /* sampled mid-tone, highlights on dark */
+  --green-tint: #e8eee0;
+  --green-text: #2f4620;   /* links on white, AA */
+
+  /* Carrot terracotta — accent only */
+  --terra: #c4622d;
+  --terra-tint: #f7e7dc;
+
+  /* Text */
+  --t-body: #2a2a28;
+  --t-muted: #66655f;
+  --t-on-dark: #f3f0e8;
+  --t-on-dark-muted: #b8b5ac;
+
+  /* Type */
+  --f-display: "Permanent Marker", "Rock Salt", "Comic Sans MS", cursive;
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --fs-h1: clamp(2.1rem, 1.3rem + 3.4vw, 3.6rem);
+  --fs-h2: clamp(1.6rem, 1.15rem + 1.9vw, 2.5rem);
+  --fs-h3: clamp(1.15rem, 1rem + .6vw, 1.4rem);
+  --fs-body: 1rem;
+  --fs-small: .875rem;
+
+  /* Layout */
+  --max: 1180px;
+  --gutter: clamp(16px, 4vw, 40px);
+
+  /* Hand-drawn edges: uneven radii so cards and buttons never look machine-perfect */
+  --r-rough: 255px 14px 225px 14px / 14px 225px 14px 255px;
+  --r-rough-sm: 120px 8px 110px 8px / 8px 110px 8px 120px;
+  --r-tile: 14px;
+
+  --shadow: 0 1px 2px rgba(20,20,20,.06), 0 10px 30px rgba(20,20,20,.08);
+  --shadow-hover: 0 4px 10px rgba(20,20,20,.10), 0 24px 48px rgba(20,20,20,.14);
+
+  /* Motion */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --dur: .5s;
+}

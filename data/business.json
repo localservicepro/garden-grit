@@ -1,0 +1,36 @@
+{
+  "name": "Garden Grit",
+  "legalName": "Garden Grit",
+  "abn": "77 010 629 087",
+  "owner": "Emma Pelle",
+  "ownerTitle": "Owner / Senior Horticulturalist",
+  "tradingSince": 2017,
+  "phoneDisplay": "0422 172 452",
+  "phoneTel": "+61422172452",
+  "email": "emma@gardengrit.com.au",
+  "address": {
+    "suburb": "Norwood",
+    "state": "SA",
+    "postcode": "5067",
+    "country": "AU",
+    "formatted": "Norwood SA 5067"
+  },
+  "serviceRadiusKm": 20,
+  "website": "https://www.gardengrit.com.au",
+  "gbpUrl": "https://share.google/Opvouqv5Fmr8lCXHW",
+  "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d441756.7282279294!2d138.61115984999998!3d-35.000766950000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8b19c16bb8a79abf%3A0x43aa698839640229!2sGarden%20Grit!5e1!3m2!1sen!2sph!4v1792750149465!5m2!1sen!2sph",
+  "social": {
+    "facebook": "https://www.facebook.com/gardengritsa",
+    "instagram": "https://www.instagram.com/gardengritsa/"
+  },
+  "trackingScript": "https://link.msgsndr.com/js/external-tracking.js",
+  "trackingId": "tk_54b835c714ee4e1fab0adda24caddf48",
+  "logo": "/assets/img/logo/garden-grit-logo.png",
+  "ogImage": "/assets/img/og-default.jpg",
+  "credentials": [
+    "Certificate III in Horticulture (ARO College, Carrick Hill SA)",
+    "Currently studying garden design",
+    "Owner-operated since 2017",
+    "Female-led trade business"
+  ]
+}

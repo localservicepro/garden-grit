@@ -1,0 +1,172 @@
+[
+  {
+    "name": "Norwood",
+    "postcode": "5067",
+    "lat": -34.92,
+    "lon": 138.63,
+    "home": true,
+    "route": 0,
+    "anchor": true,
+    "label": "right"
+  },
+  {
+    "name": "Kent Town",
+    "postcode": "5067",
+    "lat": -34.921,
+    "lon": 138.619,
+    "label": "left"
+  },
+  {
+    "name": "Stepney",
+    "postcode": "5069",
+    "lat": -34.911,
+    "lon": 138.631,
+    "label": "above"
+  },
+  {
+    "name": "St Peters",
+    "postcode": "5069",
+    "lat": -34.905,
+    "lon": 138.621,
+    "route": 12,
+    "label": "left"
+  },
+  {
+    "name": "Payneham",
+    "postcode": "5070",
+    "lat": -34.898,
+    "lon": 138.645,
+    "route": 1,
+    "label": "below"
+  },
+  {
+    "name": "Glynde",
+    "postcode": "5070",
+    "lat": -34.895,
+    "lon": 138.658,
+    "label": "right"
+  },
+  {
+    "name": "Campbelltown",
+    "postcode": "5074",
+    "lat": -34.882,
+    "lon": 138.666,
+    "route": 2
+  },
+  {
+    "name": "Paradise",
+    "postcode": "5075",
+    "lat": -34.872,
+    "lon": 138.672
+  },
+  {
+    "name": "Dernancourt",
+    "postcode": "5075",
+    "lat": -34.86,
+    "lon": 138.676,
+    "route": 3
+  },
+  {
+    "name": "Modbury",
+    "postcode": "5092",
+    "lat": -34.832,
+    "lon": 138.684,
+    "route": 4
+  },
+  {
+    "name": "Tea Tree Gully",
+    "postcode": "5091",
+    "lat": -34.818,
+    "lon": 138.718,
+    "route": 5,
+    "anchor": true
+  },
+  {
+    "name": "Golden Grove",
+    "postcode": "5125",
+    "lat": -34.787,
+    "lon": 138.724
+  },
+  {
+    "name": "Athelstone",
+    "postcode": "5076",
+    "lat": -34.87,
+    "lon": 138.703,
+    "route": 6
+  },
+  {
+    "name": "Magill",
+    "postcode": "5072",
+    "lat": -34.912,
+    "lon": 138.68,
+    "route": 7
+  },
+  {
+    "name": "Burnside",
+    "postcode": "5066",
+    "lat": -34.94,
+    "lon": 138.668,
+    "route": 8,
+    "anchor": true
+  },
+  {
+    "name": "Toorak Gardens",
+    "postcode": "5065",
+    "lat": -34.932,
+    "lon": 138.648,
+    "route": 9,
+    "label": "below"
+  },
+  {
+    "name": "Rose Park",
+    "postcode": "5067",
+    "lat": -34.928,
+    "lon": 138.632,
+    "label": "below"
+  },
+  {
+    "name": "Kensington Park",
+    "postcode": "5068",
+    "lat": -34.921,
+    "lon": 138.658,
+    "label": "right"
+  },
+  {
+    "name": "Unley",
+    "postcode": "5061",
+    "lat": -34.95,
+    "lon": 138.602,
+    "label": "left"
+  },
+  {
+    "name": "Adelaide CBD",
+    "postcode": "5000",
+    "lat": -34.928,
+    "lon": 138.6,
+    "route": 10,
+    "label": "left"
+  },
+  {
+    "name": "Bowden",
+    "postcode": "5007",
+    "lat": -34.902,
+    "lon": 138.577,
+    "route": 11,
+    "anchor": true,
+    "label": "below"
+  },
+  {
+    "name": "Prospect",
+    "postcode": "5082",
+    "lat": -34.882,
+    "lon": 138.595,
+    "label": "left"
+  },
+  {
+    "name": "Walkerville",
+    "postcode": "5081",
+    "lat": -34.895,
+    "lon": 138.618,
+    "label": "left"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "name": "garden-grit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static site for Garden Grit (gardengrit.com.au), generated from /data by scripts/build.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "images": "node scripts/images.js",
+    "serve": "npx http-server site -p 8080 -c-1"
+  },
+  "engines": { "node": ">=18" },
+  "optionalDependencies": { "sharp": "^0.33.5" }
+}

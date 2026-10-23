@@ -1,0 +1,13 @@
+{
+  "_comment": "Old Wix URLs (crawled 2026-10-23) → new static URLs. npm run redirects regenerates site/_redirects and the block in netlify.toml.",
+  "map": {
+    "/about": "/about/",
+    "/services": "/services/",
+    "/services-1": "/about/#workshops",
+    "/terms-conditions": "/contact/",
+    "/home": "/",
+    "/blank": "/",
+    "/book-an-appointment": "/contact/",
+    "/contact-info": "/contact/"
+  }
+}
